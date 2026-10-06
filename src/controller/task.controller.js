@@ -4,7 +4,29 @@ const Tasks = require("../models/task.models.js")
 const getTasks = async (req, res) => {
     try {
 
-        const findAllTasks = await Tasks.find()
+        const { completed, priority, sort } = req.query;
+
+        const filter = {};
+
+        if (completed) {
+            filter.completed = completed === "true";
+        }
+
+        if (priority) {
+            filter.priority = priority;
+        }
+
+        let sortOption = {}
+
+        if (sort === "newest") {
+            sortOption = { createdAt: -1 };
+        }
+
+        if (sort === "oldest") {
+            sortOption = { createdAt: 1 };
+        }
+
+        const findAllTasks = await Tasks.find(filter).sort(sortOption)
 
         res.status(201).json({
             message: "got all the tasks!",
