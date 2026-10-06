@@ -9,6 +9,10 @@ const dbConnection = require('./src/config/task.config.js')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const router = require("./src/routes/task.routes.js")
+
+app.use("/api/v1/tasks", router)
+
 function serverCall() {
     dbConnection()
 
